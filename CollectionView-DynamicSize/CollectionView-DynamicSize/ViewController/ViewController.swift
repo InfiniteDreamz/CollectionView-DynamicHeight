@@ -20,26 +20,44 @@ class ViewController: UIViewController {
 private extension ViewController {
     
     func configureView() {
-        self.collectionView?.register(UINib(nibName: "DynamicCell", bundle: nil), forCellWithReuseIdentifier: "DynamicCell")
+        self.collectionView?.register(UINib(nibName: "HybridCell", bundle: nil), forCellWithReuseIdentifier: "HybridCell")
         self.collectionView?.dataSource = self
-        if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
-            flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-        }
     }
 }
 
 extension ViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dataSource.count
+        return 9
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DynamicCell", for: indexPath) as? DynamicCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HybridCell", for: indexPath) as? HybridCell else {
             fatalError()
         }
         cell.maxWidth = collectionView.frame.width
-        cell.configure(with: dataSource[indexPath.row])
+        switch indexPath.row {
+        case 0:
+            cell.configure(with: [.showAddress, .showCancelButton, .showDuration, .showReservation])
+        case 1:
+            cell.configure(with: [.showPayment, .showAddress, .showDuration, .showReservation])
+        case 2:
+            cell.configure(with: [.showAddress, .showDuration, .showReservation])
+        case 3:
+            cell.configure(with: [.showPayment, .showAddress, .showDuration, .showReservation])
+        case 4:
+            cell.configure(with: [.showPayment, .showAddress, .showDuration, .showReservation])
+        case 5:
+            cell.configure(with: [.showAddress, .showCancelButton, .showDuration, .showReservation])
+        case 6:
+            cell.configure(with: [.showAddress, .showDuration])
+        case 7:
+            cell.configure(with: [.showPayment, .showAddress, .showCancelButton, .showDuration])
+        case 8:
+            cell.configure(with: [.showAddress, .showCancelButton, .showDuration])
+        default:
+            cell.configure(with: [.showPayment, .showAddress, .showCancelButton, .showDuration, .showReservation])
+        }
         return cell
     }
     
